@@ -12,7 +12,7 @@ func main() {
 		//InsecureSkipVerify: true,
 	}
 
-	conn, err := tls.Dial("tcp", "www.vrbo.com:443", conf)
+	conn, err := tls.Dial("tcp", "www.google.com:443", conf)
 	if err != nil {
 		log.Panic(err)
 	}
