@@ -74,7 +74,6 @@ brews:
     # Default is empty.
     test: |
       system "#{bin}/server-tls-monitor -h"
-      ...
 
     # Custom install script for brew.
     # Default is 'bin.install "program"'.
