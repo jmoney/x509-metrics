@@ -34,7 +34,7 @@ brews:
 
       branch: main
 
-      token: "{{ .Env.HOMEBREW_TLS_GITHUB_TOKEN }}"
+      token: "{{ .Env.GITHUB_TOKEN }}"
 
     # Git author used to commit to the repository.
     # Defaults are shown.
