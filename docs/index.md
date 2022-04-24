@@ -16,13 +16,20 @@ for monitoring certificate expiration and when a certificate needs to be rotated
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://jmoney.dev/server-certificate-monitor/tlsmetrics.schema.json",
+  "$id": "https://jmoney.dev/server-tls-monitor/tlsmetrics.schema.json",
   "title": "TlsMetrics",
   "description": "Tls expiration metrics of a certificate hosted on a server.",
   "type": "object",
   "properties": {
+    "tags": {
+      "description": "Metadata about the certificate.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "tls": {
-      "description": "Root object. Metric data is hosted under.",
+      "description": "Metric data is hosted under.",
       "type": "object",
       "properties": {
         "days_left": {
@@ -45,7 +52,7 @@ for monitoring certificate expiration and when a certificate needs to be rotated
       "required": [ "days_left", "issued_days", "issued_days", "seconds_left" ]
     }
   },
-  "required": [ "tls" ]
+  "required": [ "tags", "tls" ]
 }
 ```
 

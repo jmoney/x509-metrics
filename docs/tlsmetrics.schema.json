@@ -5,8 +5,15 @@
   "description": "Tls expiration metrics of a certificate hosted on a server.",
   "type": "object",
   "properties": {
+    "tags": {
+      "description": "Metadata about the certificate.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "tls": {
-      "description": "Root object. Metric data is hosted under.",
+      "description": "Metric data is hosted under.",
       "type": "object",
       "properties": {
         "days_left": {
@@ -29,5 +36,5 @@
       "required": [ "days_left", "issued_days", "issued_days", "seconds_left" ]
     }
   },
-  "required": [ "tls" ]
+  "required": [ "tags", "tls" ]
 }

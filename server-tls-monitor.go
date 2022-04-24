@@ -12,6 +12,11 @@ import (
 	"time"
 )
 
+type TlsMetrics struct {
+	Tls  map[string]int64 `json:"tls"`
+	Tags []string         `json:"tags"`
+}
+
 func main() {
 
 	host := flag.String("host", "", "The host to connect too.")
@@ -119,7 +124,7 @@ func connectTcp(host string, port int) (*tls.Conn, error) {
 	return conn, err
 }
 
-func tlsMetrics(client *tls.Conn) map[string]map[string]int64 {
+func tlsMetrics(client *tls.Conn) TlsMetrics {
 	metrics := make(map[string]int64)
 
 	err := client.Handshake()
@@ -136,5 +141,8 @@ func tlsMetrics(client *tls.Conn) map[string]map[string]int64 {
 	metrics["issued_days"] = int64(issuedAt.Hours() / 24)
 	metrics["issued_seconds"] = int64(issuedAt.Seconds())
 
-	return map[string]map[string]int64{"tls": metrics}
+	return TlsMetrics{
+		Tls:  metrics,
+		Tags: []string{"host:" + client.ConnectionState().ServerName},
+	}
 }
