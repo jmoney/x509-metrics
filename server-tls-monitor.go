@@ -143,6 +143,6 @@ func tlsMetrics(client *tls.Conn) TlsMetrics {
 
 	return TlsMetrics{
 		Tls:  metrics,
-		Tags: []string{"host:" + client.ConnectionState().ServerName},
+		Tags: []string{"name:" + client.ConnectionState().ServerName},
 	}
 }
