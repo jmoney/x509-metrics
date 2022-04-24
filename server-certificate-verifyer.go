@@ -2,10 +2,12 @@ package main
 
 import (
 	"crypto/tls"
+	"encoding/binary"
 	"encoding/json"
 	"flag"
 	"fmt"
-	"log"
+	"io"
+	"net"
 	"strconv"
 	"time"
 )
@@ -14,7 +16,7 @@ func main() {
 
 	host := flag.String("host", "", "The host to connect too.")
 	port := flag.Int("port", 443, "The port to connect too.")
-	protocol := flag.String("protocol", "tcp", "The protocol to use.  Valid values are tcp.")
+	protocol := flag.String("protocol", "tcp", "The protocol to use.  Valid values are tcp or postgres.")
 	flag.Parse()
 
 	var conn *tls.Conn
@@ -23,6 +25,8 @@ func main() {
 	switch *protocol {
 	case "tcp":
 		conn, err = connectTcp(*host, *port)
+	case "postgres":
+		conn, err = connectPostgres(*host, *port)
 	default:
 		panic("Unknown protocol")
 	}
@@ -39,6 +43,60 @@ func main() {
 	fmt.Println(string(jsonBytes))
 }
 
+func connectPostgres(host string, port int) (*tls.Conn, error) {
+	conn, err := net.Dial("tcp", host+":"+strconv.Itoa(port))
+	if err != nil {
+		panic(err)
+	}
+	defer func(cxn net.Conn) {
+		_ = cxn.Close()
+	}(conn)
+
+	// Begin postgres handshake
+	var scratchBuffer [512]byte
+	scratchBuffer[0] = 0
+	startupMessage := scratchBuffer[:5]
+
+	x := make([]byte, 4)
+	binary.BigEndian.PutUint32(x, uint32(80877103))
+	startupMessage = append(startupMessage, x...)
+
+	y := startupMessage[1:]
+	binary.BigEndian.PutUint32(y, uint32(len(y)))
+
+	_, err = conn.Write(startupMessage[1:])
+	if err != nil {
+		panic(err)
+	}
+
+	buffer := scratchBuffer[:1]
+	_, err = io.ReadFull(conn, buffer)
+	if err != nil {
+		panic(err)
+	}
+
+	if buffer[0] != 'S' {
+		panic("SSL not supported")
+	}
+	// End Postgres handshake
+
+	conf := &tls.Config{
+		ServerName: host,
+	}
+
+	client := tls.Client(conn, conf)
+	defer func(cxn *tls.Conn) {
+		_ = cxn.Close()
+	}(client)
+
+	err = client.Handshake()
+	if err != nil {
+		panic(err)
+	}
+
+	return client, err
+}
+
 func connectTcp(host string, port int) (*tls.Conn, error) {
 	conf := &tls.Config{
 		ServerName: host,
@@ -46,7 +104,7 @@ func connectTcp(host string, port int) (*tls.Conn, error) {
 
 	conn, err := tls.Dial("tcp", host+":"+strconv.Itoa(port), conf)
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 
 	defer func(conn *tls.Conn) {
@@ -55,7 +113,7 @@ func connectTcp(host string, port int) (*tls.Conn, error) {
 
 	err = conn.Handshake()
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 
 	return conn, err
