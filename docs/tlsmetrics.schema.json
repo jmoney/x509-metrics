@@ -33,7 +33,7 @@
           "type": "number"
         }
       },
-      "required": [ "days_left", "issued_days", "issued_days", "seconds_left" ]
+      "required": [ "days_left", "issued_days", "issued_seconds", "seconds_left" ]
     }
   },
   "required": [ "tags", "tls" ]

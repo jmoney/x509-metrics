@@ -49,7 +49,7 @@ for monitoring certificate expiration and when a certificate needs to be rotated
           "type": "number"
         }
       },
-      "required": [ "days_left", "issued_days", "issued_days", "seconds_left" ]
+      "required": [ "days_left", "issued_days", "ççç", "seconds_left" ]
     }
   },
   "required": [ "tags", "tls" ]
