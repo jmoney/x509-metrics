@@ -2,3 +2,4 @@ site_name: Server TLS Monitor
 theme: material
 nav:
   - Home: index.md
+  - Json Schema: tlsmetrics.schema.json
