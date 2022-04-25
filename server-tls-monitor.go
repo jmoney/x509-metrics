@@ -4,17 +4,20 @@ import (
 	"crypto/tls"
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"net"
+	"os"
 	"strconv"
 	"time"
 )
 
 type TlsMetrics struct {
-	Tls  map[string]int64 `json:"tls"`
-	Tags []string         `json:"tags"`
+	Tls   map[string]int64 `json:"tls,omitempty"`
+	Tags  []string         `json:"tags,omitempty"`
+	Error string           `json:"error,omitempty"`
 }
 
 func main() {
@@ -37,21 +40,37 @@ func main() {
 	}
 
 	if err != nil {
-		panic(err)
+		tlsMetrics := TlsMetrics{
+			Error: err.Error(),
+		}
+		fmt.Println(marshalTlsMetrics(&tlsMetrics))
+		os.Exit(1)
 	}
 
-	tlsMetrics := tlsMetrics(conn)
+	tlsMetrics, err := tlsMetrics(conn)
+	if err != nil {
+		tlsMetrics := TlsMetrics{
+			Error: err.Error(),
+		}
+		marshalTlsMetrics(&tlsMetrics)
+		os.Exit(1)
+	}
+
+	fmt.Println(marshalTlsMetrics(tlsMetrics))
+}
+
+func marshalTlsMetrics(metrics *TlsMetrics) string {
 	jsonBytes, err := json.Marshal(tlsMetrics)
 	if err != nil {
 		panic("cannot convert map to json")
 	}
-	fmt.Println(string(jsonBytes))
+	return string(jsonBytes)
 }
 
 func connectPostgres(host string, port int) (*tls.Conn, error) {
 	conn, err := net.Dial("tcp", host+":"+strconv.Itoa(port))
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer func(cxn net.Conn) {
 		_ = cxn.Close()
@@ -71,17 +90,17 @@ func connectPostgres(host string, port int) (*tls.Conn, error) {
 
 	_, err = conn.Write(startupMessage[1:])
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	buffer := scratchBuffer[:1]
 	_, err = io.ReadFull(conn, buffer)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	if buffer[0] != 'S' {
-		panic("SSL not supported")
+		return nil, errors.New("SSL not supported")
 	}
 	// End Postgres handshake
 
@@ -96,10 +115,10 @@ func connectPostgres(host string, port int) (*tls.Conn, error) {
 
 	err = client.Handshake()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return client, err
+	return client, nil
 }
 
 func connectTcp(host string, port int) (*tls.Conn, error) {
@@ -109,7 +128,7 @@ func connectTcp(host string, port int) (*tls.Conn, error) {
 
 	conn, err := tls.Dial("tcp", host+":"+strconv.Itoa(port), conf)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	defer func(conn *tls.Conn) {
@@ -118,18 +137,18 @@ func connectTcp(host string, port int) (*tls.Conn, error) {
 
 	err = conn.Handshake()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return conn, err
+	return conn, nil
 }
 
-func tlsMetrics(client *tls.Conn) TlsMetrics {
+func tlsMetrics(client *tls.Conn) (*TlsMetrics, error) {
 	metrics := make(map[string]int64)
 
 	err := client.Handshake()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	certs := client.ConnectionState().PeerCertificates
 
@@ -141,8 +160,8 @@ func tlsMetrics(client *tls.Conn) TlsMetrics {
 	metrics["issued_days"] = int64(issuedAt.Hours() / 24)
 	metrics["issued_seconds"] = int64(issuedAt.Seconds())
 
-	return TlsMetrics{
+	return &TlsMetrics{
 		Tls:  metrics,
 		Tags: []string{"name:" + client.ConnectionState().ServerName},
-	}
+	}, nil
 }
