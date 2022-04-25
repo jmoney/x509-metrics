@@ -47,9 +47,9 @@ dockers:
 
     # Templates of the Docker image names.
     image_templates:
-      - "gcr.io/jmoney/server-tls-monitor:latest"
-      - "gcr.io/jmoney/server-tls-monitor:{{ .Tag }}"
-      - "gcr.io/jmoney/server-tls-monitor:v{{ .Major }}"
+      - "ghcr.io/jmoney/server-tls-monitor:latest"
+      - "ghcr.io/jmoney/server-tls-monitor:{{ .Tag }}"
+      - "ghcr.io/jmoney/server-tls-monitor:v{{ .Major }}"
 
     dockerfile: 'Dockerfile'
 
