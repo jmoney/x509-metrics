@@ -1,5 +1,8 @@
 builds:
-  - env:
+  -
+    id: server-tls-monitor
+
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
@@ -22,6 +25,35 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+
+dockers:
+  # You can have multiple Docker images.
+  -
+    # ID of the image, needed if you want to filter by it later on (e.g. on custom publishers).
+    id: server-tls-monitor
+
+    # GOOS of the built binaries/packages that should be used.
+    goos: linux
+
+    # GOARCH of the built binaries/packages that should be used.
+    goarch: amd64
+
+    # GOAMD64 of the built binaries/packages that should be used.
+    goamd64: 'v1'
+
+    # IDs to filter the binaries/packages.
+    ids:
+      - server-tls-monitor
+
+    # Templates of the Docker image names.
+    image_templates:
+      - "gcr.io/jmoney/server-tls-monitor:latest"
+      - "gcr.io/jmoney/server-tls-monitor:{{ .Tag }}"
+      - "gcr.io/jmoney/server-tls-monitor:v{{ .Major }}"
+
+    dockerfile: 'Dockerfile'
+
+    use: docker
 
 # .goreleaser.yaml
 brews:
