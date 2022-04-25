@@ -78,7 +78,7 @@ brews:
 
     folder: Formula
 
-    homepage: "https://jmoney.dev/"
+    homepage: "https://jmoney.dev/server-tls-monitor"
 
     description: "Reports tls certificate metrics"
 
