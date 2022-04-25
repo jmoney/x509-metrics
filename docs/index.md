@@ -21,6 +21,10 @@ for monitoring certificate expiration and when a certificate needs to be rotated
   "description": "Tls expiration metrics of a certificate hosted on a server.",
   "type": "object",
   "properties": {
+    "error": {
+      "description": "Error message is gathering metrics failed with the reason why",
+      "type": "string"
+    },
     "tags": {
       "description": "Metadata about the certificate.",
       "type": "array",
@@ -51,8 +55,7 @@ for monitoring certificate expiration and when a certificate needs to be rotated
       },
       "required": [ "days_left", "issued_days", "ççç", "seconds_left" ]
     }
-  },
-  "required": [ "tags", "tls" ]
+  }
 }
 ```
 

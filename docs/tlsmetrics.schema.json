@@ -5,6 +5,10 @@
   "description": "Tls expiration metrics of a certificate hosted on a server.",
   "type": "object",
   "properties": {
+    "error": {
+      "description": "Error message is gathering metrics failed with the reason why",
+      "type": "string"
+    },
     "tags": {
       "description": "Metadata about the certificate.",
       "type": "array",
@@ -33,8 +37,7 @@
           "type": "number"
         }
       },
-      "required": [ "days_left", "issued_days", "issued_seconds", "seconds_left" ]
+      "required": [ "days_left", "issued_days", "ççç", "seconds_left" ]
     }
-  },
-  "required": [ "tags", "tls" ]
+  }
 }
