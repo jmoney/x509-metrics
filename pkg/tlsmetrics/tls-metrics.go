@@ -1,15 +1,11 @@
-package main
+package tlsmetrics
 
 import (
 	"crypto/tls"
 	"encoding/binary"
-	"encoding/json"
 	"errors"
-	"flag"
-	"fmt"
 	"io"
 	"net"
-	"os"
 	"strconv"
 	"time"
 )
@@ -20,12 +16,7 @@ type TlsMetrics struct {
 	Error string           `json:"error,omitempty"`
 }
 
-func main() {
-
-	host := flag.String("host", "", "The host to connect too.")
-	port := flag.Int("port", 443, "The port to connect too.")
-	protocol := flag.String("protocol", "tcp", "The protocol to use.  Valid values are tcp or postgres.")
-	flag.Parse()
+func FetchTlsMetrics(protocol *string, host *string, port *int) TlsMetrics {
 
 	var conn *tls.Conn
 	var err error
@@ -40,31 +31,19 @@ func main() {
 	}
 
 	if err != nil {
-		tlsMetrics := TlsMetrics{
+		return TlsMetrics{
 			Error: err.Error(),
 		}
-		fmt.Println(marshalTlsMetrics(&tlsMetrics))
-		os.Exit(1)
 	}
 
 	tlsMetrics, err := tlsMetrics(conn)
 	if err != nil {
-		tlsMetrics := TlsMetrics{
+		return TlsMetrics{
 			Error: err.Error(),
 		}
-		marshalTlsMetrics(&tlsMetrics)
-		os.Exit(1)
 	}
 
-	fmt.Println(marshalTlsMetrics(tlsMetrics))
-}
-
-func marshalTlsMetrics(metrics *TlsMetrics) string {
-	jsonBytes, err := json.Marshal(metrics)
-	if err != nil {
-		panic("cannot convert map to json")
-	}
-	return string(jsonBytes)
+	return *tlsMetrics
 }
 
 func connectPostgres(host string, port int) (*tls.Conn, error) {
