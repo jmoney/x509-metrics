@@ -60,7 +60,7 @@ func main() {
 }
 
 func marshalTlsMetrics(metrics *TlsMetrics) string {
-	jsonBytes, err := json.Marshal(tlsMetrics)
+	jsonBytes, err := json.Marshal(metrics)
 	if err != nil {
 		panic("cannot convert map to json")
 	}
