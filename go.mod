@@ -1,3 +1,3 @@
-module github.com/jmoney/server-tls-monitor
+module github.com/jmoney/server-tls-metrics
 
 go 1.18

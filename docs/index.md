@@ -1,4 +1,4 @@
-# Server TLS Monitor
+# Server TLS Metrics
 
 This script pings a server and asks for the certificate.  It then reports some expiration data in json form.  Useful
 for monitoring certificate expiration and when a certificate needs to be rotated.
@@ -16,7 +16,7 @@ for monitoring certificate expiration and when a certificate needs to be rotated
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://jmoney.dev/server-tls-monitor/tlsmetrics.schema.json",
+  "$id": "https://jmoney.dev/server-tls-metrics/tlsmetrics.schema.json",
   "title": "TlsMetrics",
   "description": "Tls expiration metrics of a certificate hosted on a server.",
   "type": "object",
@@ -62,5 +62,5 @@ for monitoring certificate expiration and when a certificate needs to be rotated
 ## Help
 
 ```bash
-server-tls-monitor -host example.com
+server-tls-metrics -host example.com
 ```

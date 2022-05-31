@@ -1,4 +1,4 @@
-site_name: Server TLS Monitor
+site_name: Server TLS Metrics
 theme: material
 nav:
   - Home: index.md
