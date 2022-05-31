@@ -1,3 +1,3 @@
 FROM alpine
-COPY server-tls-monitor /
+COPY server-tls-metrics /
 ENTRYPOINT ["/server-tls-metrics"]
