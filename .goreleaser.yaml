@@ -1,6 +1,7 @@
 builds:
   -
     id: server-tls-metrics
+    main: ./cmd/server-tls-metrics.go
 
     env:
       - CGO_ENABLED=0
@@ -78,7 +79,7 @@ brews:
 
       folder: Formula
 
-      homepage: "https://jmoney.dev/server-tls-monitor"
+      homepage: "https://jmoney.dev/server-tls-metrics"
 
       description: "Reports tls certificate metrics"
 
@@ -97,12 +98,12 @@ brews:
       # So you can `brew test` your formula.
       # Default is empty.
       test: |
-        system "#{bin}/server-tls-monitor -h"
+        system "#{bin}/server-tls-metrics -h"
 
       # Custom install script for brew.
       # Default is 'bin.install "program"'.
       install: |
-        bin.install "server-tls-monitor"
+        bin.install "server-tls-metrics"
   -
     name: "server-tls-metrics"
 
