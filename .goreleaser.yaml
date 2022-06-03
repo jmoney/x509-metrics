@@ -1,7 +1,7 @@
 builds:
   -
-    id: server-tls-metrics
-    main: ./cmd/server-tls-metrics.go
+    id: x509-metrics
+    main: ./cmd/x509-metrics.go
 
     env:
       - CGO_ENABLED=0
@@ -11,11 +11,13 @@ builds:
     goarch:
       - amd64
       - arm64
+
 archives:
   - replacements:
       darwin: Darwin
       linux: Linux
       amd64: x86_64
+
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -31,7 +33,7 @@ dockers:
   # You can have multiple Docker images.
   -
     # ID of the image, needed if you want to filter by it later on (e.g. on custom publishers).
-    id: server-tls-metrics
+    id: x509-metrics
 
     # GOOS of the built binaries/packages that should be used.
     goos: linux
@@ -44,13 +46,13 @@ dockers:
 
     # IDs to filter the binaries/packages.
     ids:
-      - server-tls-metrics
+      - x509-metrics
 
     # Templates of the Docker image names.
     image_templates:
-      - "ghcr.io/jmoney/server-tls-metrics:latest"
-      - "ghcr.io/jmoney/server-tls-metrics:{{ .Tag }}"
-      - "ghcr.io/jmoney/server-tls-metrics:v{{ .Major }}"
+      - "ghcr.io/jmoney/x509-metrics:latest"
+      - "ghcr.io/jmoney/x509-metrics:{{ .Tag }}"
+      - "ghcr.io/jmoney/x509-metrics:v{{ .Major }}"
 
     dockerfile: 'Dockerfile'
 
@@ -59,53 +61,9 @@ dockers:
 # .goreleaser.yaml
 brews:
   -
-      name: "server-tls-metrics@{{ .Tag }}"
-
-      tap:
-        owner: jmoney
-        name: homebrew-tls
-
-        branch: main
-
-        token: "{{ .Env.GITHUB_TOKEN }}"
-
-      # Git author used to commit to the repository.
-      # Defaults are shown.
-      commit_author:
-        name: goreleaserbot
-        email: noreply@gmail.com
-
-      commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
-
-      folder: Formula
-
-      homepage: "https://jmoney.dev/server-tls-metrics"
-
-      description: "Reports tls certificate metrics"
-
-      # SPDX identifier of your app's license.
-      # Default is empty.
-      license: "Apache 2.0"
-
-      # Setting this will prevent goreleaser to actually try to commit the updated
-      # formula - instead, the formula file will be stored on the dist folder only,
-      # leaving the responsibility of publishing it to the user.
-      # If set to auto, the release will not be uploaded to the homebrew tap
-      # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
-      # Default is false.
-      #    skip_upload: true
-
-      # So you can `brew test` your formula.
-      # Default is empty.
-      test: |
-        system "#{bin}/server-tls-metrics -h"
-
-      # Custom install script for brew.
-      # Default is 'bin.install "program"'.
-      install: |
-        bin.install "server-tls-metrics"
-  -
-    name: "server-tls-metrics"
+    name: "x509-metrics@{{ .Tag }}"
+    ids:
+      - x509-metrics
 
     tap:
       owner: jmoney
@@ -125,7 +83,7 @@ brews:
 
     folder: Formula
 
-    homepage: "https://jmoney.dev/server-tls-metrics"
+    homepage: "https://jmoney.dev/x509-metrics"
 
     description: "Reports tls certificate metrics"
 
@@ -139,14 +97,62 @@ brews:
     # If set to auto, the release will not be uploaded to the homebrew tap
     # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
     # Default is false.
-#    skip_upload: true
+    #    skip_upload: true
 
     # So you can `brew test` your formula.
     # Default is empty.
     test: |
-      system "#{bin}/server-tls-metrics -h"
+      system "#{bin}/x509-metrics -h"
 
     # Custom install script for brew.
     # Default is 'bin.install "program"'.
     install: |
-      bin.install "server-tls-metrics"
+      bin.install "x509-metrics"
+  -
+    name: "x509-metrics"
+    ids:
+      - x509-metrics
+
+    tap:
+      owner: jmoney
+      name: homebrew-x509
+
+      branch: main
+
+      token: "{{ .Env.GITHUB_TOKEN }}"
+
+    # Git author used to commit to the repository.
+    # Defaults are shown.
+    commit_author:
+      name: goreleaserbot
+      email: noreply@gmail.com
+
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+
+    folder: Formula
+
+    homepage: "https://jmoney.dev/x509-metrics"
+
+    description: "Reports tls certificate metrics"
+
+    # SPDX identifier of your app's license.
+    # Default is empty.
+    license: "Apache 2.0"
+
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user.
+    # If set to auto, the release will not be uploaded to the homebrew tap
+    # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+    # Default is false.
+    #    skip_upload: true
+
+    # So you can `brew test` your formula.
+    # Default is empty.
+    test: |
+      system "#{bin}/x509-metrics -h"
+
+    # Custom install script for brew.
+    # Default is 'bin.install "program"'.
+    install: |
+      bin.install "x509-metrics"

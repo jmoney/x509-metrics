@@ -1,32 +1,20 @@
-package tlsmetrics
+package tls
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/binary"
 	"errors"
 	"io"
 	"net"
 	"strconv"
-	"time"
 )
 
-// TlsMetrics contains the expiration metrics of a TLS certificate hosted on a server.
-// Tls a map of the expiration metrics. The key metrics are issued and left in both days and second flavors.
-// Issued is how old the certificate is and left is how many units left until expiration.
-// Tags are not customizable and currently only contain the servername from the certificate but could house more useful
-// data later.
-// Error is any error message that occurred during the collection process.
-type TlsMetrics struct {
-	Tls   map[string]int64 `json:"tls,omitempty"`
-	Tags  []string         `json:"tags,omitempty"`
-	Error string           `json:"error,omitempty"`
-}
-
-// FetchTlsMetrics fetches tls expiration metrics from a hosted server.
+// FetchTlsCertificate fetches tls expiration metrics from a hosted server.
 // Protocol is either tcp or postgres.
 // host is the host that is hosting the certificate in question.
 // port is the port to connect too.
-func FetchTlsMetrics(protocol *string, host *string, port *int) TlsMetrics {
+func FetchTlsCertificate(protocol *string, host *string, port *int) (*x509.Certificate, error) {
 
 	var conn *tls.Conn
 	var err error
@@ -41,19 +29,15 @@ func FetchTlsMetrics(protocol *string, host *string, port *int) TlsMetrics {
 	}
 
 	if err != nil {
-		return TlsMetrics{
-			Error: err.Error(),
-		}
+		return nil, err
 	}
 
-	tlsMetrics, err := tlsMetrics(conn)
+	err = conn.Handshake()
 	if err != nil {
-		return TlsMetrics{
-			Error: err.Error(),
-		}
+		return nil, err
 	}
-
-	return *tlsMetrics
+	certs := conn.ConnectionState().PeerCertificates
+	return certs[0], nil
 }
 
 func connectPostgres(host string, port int) (*tls.Conn, error) {
@@ -130,27 +114,4 @@ func connectTcp(host string, port int) (*tls.Conn, error) {
 	}
 
 	return conn, nil
-}
-
-func tlsMetrics(client *tls.Conn) (*TlsMetrics, error) {
-	metrics := make(map[string]int64)
-
-	err := client.Handshake()
-	if err != nil {
-		return nil, err
-	}
-	certs := client.ConnectionState().PeerCertificates
-
-	expiresIn := certs[0].NotAfter.Sub(time.Now())
-	issuedAt := time.Now().Sub(certs[0].NotBefore)
-
-	metrics["days_left"] = int64(expiresIn.Hours() / 24)
-	metrics["seconds_left"] = int64(expiresIn.Seconds())
-	metrics["issued_days"] = int64(issuedAt.Hours() / 24)
-	metrics["issued_seconds"] = int64(issuedAt.Seconds())
-
-	return &TlsMetrics{
-		Tls:  metrics,
-		Tags: []string{"name:" + client.ConnectionState().ServerName},
-	}, nil
 }

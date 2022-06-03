@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://jmoney.dev/server-tls-metrics/tlsmetrics.schema.json",
-  "title": "TlsMetrics",
+  "$id": "https://jmoney.dev/server-tls-metrics/x509metrics.schema.json",
+  "title": "X509Metrics",
   "description": "Tls expiration metrics of a certificate hosted on a server.",
   "type": "object",
   "properties": {
@@ -16,7 +16,7 @@
         "type": "string"
       }
     },
-    "tls": {
+    "x509": {
       "description": "Metric data is hosted under.",
       "type": "object",
       "properties": {

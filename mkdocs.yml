@@ -1,5 +1,5 @@
-site_name: Server TLS Metrics
+site_name: X509 Certificate Metrics
 theme: material
 nav:
   - Home: index.md
-  - Json Schema: tlsmetrics.schema.json
+  - Json Schema: x509metrics.schema.json

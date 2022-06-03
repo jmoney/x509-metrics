@@ -1,3 +1,3 @@
 FROM alpine
-COPY server-tls-metrics /
-ENTRYPOINT ["/server-tls-metrics"]
+COPY x509-metrics /
+ENTRYPOINT ["/x509-metrics"]

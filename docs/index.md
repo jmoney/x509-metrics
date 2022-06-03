@@ -1,12 +1,15 @@
-# Server TLS Metrics
+# X509 Metrics
 
-This script pings a server and asks for the certificate.  It then reports some expiration data in json form.  Useful
-for monitoring certificate expiration and when a certificate needs to be rotated.
+This script pings a server and asks for the certificate or allows the certificate to be passed in on the command line.
+It then reports some expiration data in json form.  Useful for monitoring certificate expiration and when a certificate
+needs to be rotated.
 
 ## Inputs
 
 | Name     | Value                                                                                                   |
 |----------|---------------------------------------------------------------------------------------------------------|
+| Stdin    | A certificate is expected to follow and the other options are ignored                                   |
+| b64      | A base64 encoded certificate is expected to follow and the other options are ignored                    |
 | Host     | The Host of the server that is to be inspected.                                                         |
 | Port     | The Port of the server that is to be inspected. Default is `443`.                                       |
 | Protocol | The protocol to use to connect to the server.  Valid options are `tcp` or `postgres`. Default is `tcp`. |
@@ -16,9 +19,9 @@ for monitoring certificate expiration and when a certificate needs to be rotated
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://jmoney.dev/server-tls-metrics/tlsmetrics.schema.json",
-  "title": "TlsMetrics",
-  "description": "Tls expiration metrics of a certificate hosted on a server.",
+  "$id": "https://jmoney.dev/x509-metrics/x509metrics.schema.json",
+  "title": "X509Metrics",
+  "description": "Certificate expiration metrics of a x509 certificate.",
   "type": "object",
   "properties": {
     "error": {
@@ -32,7 +35,7 @@ for monitoring certificate expiration and when a certificate needs to be rotated
         "type": "string"
       }
     },
-    "tls": {
+    "x509": {
       "description": "Metric data is hosted under.",
       "type": "object",
       "properties": {
@@ -62,5 +65,5 @@ for monitoring certificate expiration and when a certificate needs to be rotated
 ## Help
 
 ```bash
-server-tls-metrics -host example.com
+x509-metrics -host example.com
 ```
