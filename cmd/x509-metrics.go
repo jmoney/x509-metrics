@@ -6,8 +6,8 @@ import (
 	"encoding/pem"
 	"flag"
 	"fmt"
-	"github.com/jmoney/server-tls-metrics/pkg/tls"
-	"github.com/jmoney/server-tls-metrics/pkg/x509metrics"
+	"github.com/jmoney/x509-metrics/pkg/tls"
+	"github.com/jmoney/x509-metrics/pkg/x509metrics"
 	"io/ioutil"
 	"os"
 )

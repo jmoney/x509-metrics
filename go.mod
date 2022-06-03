@@ -1,3 +1,3 @@
-module github.com/jmoney/server-tls-metrics
+module github.com/jmoney/x509-metrics
 
 go 1.18
