@@ -23,7 +23,7 @@ func main() {
 
 	var certificate *x509.Certificate
 	var err error
-	if !*stdin && *b64Cert != "" {
+	if !*stdin && *b64Cert == "" {
 		certificate, err = tls.FetchTlsCertificate(protocol, host, port)
 		if err != nil {
 			panic(err)
