@@ -68,7 +68,7 @@ brews:
 
     tap:
       owner: jmoney
-      name: homebrew-x509
+      name: homebrew-server-utils
 
       branch: main
 
@@ -114,7 +114,7 @@ brews:
 
     tap:
       owner: jmoney
-      name: homebrew-x509
+      name: homebrew-server-utils
 
       branch: main
 
