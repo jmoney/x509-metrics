@@ -31,6 +31,7 @@ jobs:
         env:
           CONFIG_FILE: ./mkdocs.yml
           REQUIREMENTS: ./requirements.txt
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
