@@ -22,3 +22,7 @@ theme:
   highlightjs: true
   hljs_style: github
   logo: img/favicon.ico
+
+badge:
+ github_repo: x509-metrics 
+ github_user: jmoney
