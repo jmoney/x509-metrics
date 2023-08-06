@@ -16,6 +16,7 @@ nav:
   - Homebrew: 'https://www.jmoney.dev/homebrew' 
   - TIL: 'https://www.jmoney.dev/til'
   - Resume: 'https://github.com/jmoney/resume/releases/download/latest/JonathanMonette_resume.pdf'
+  - License: license.md
 
 theme:
   name: github
