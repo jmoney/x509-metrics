@@ -24,10 +24,8 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Generate docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@1.26
+        uses: jmoney/gha-mkdocs-personal@main
         env:
-          CONFIG_FILE: ./mkdocs.yml
-          REQUIREMENTS: ./requirements.txt
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Pages
