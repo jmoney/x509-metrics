@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="keyword" content="jmoney, jonathan monette, engineer">
+        <meta name="author" content="jmoney">
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>X509 Certificate Metrics</title>
+        <link rel="stylesheet" href="css/theme.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css">
+        <script src="js/theme.js" defer></script>
+      
+        <script> var base_url = "." </script>
+        <script src="search/main.js" defer></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+<body>
+    <header class="header">
+        <a id="nav-toggle" class="pizza">&#9776;</a>
+        <div class="title">
+            <a href="/" class="logo">X509 Certificate Metrics </a>
+             
+                <img alt="GitHub" src="https://flat.badgen.net/github/license/jmoney/x509-metrics">
+                <a href="https://github.com/jmoney/x509-metrics" target="_blank">
+                <img alt="GitHub stars" src="https://img.shields.io/github/stars/jmoney/x509-metrics?style=social" class="stars">
+                </a>
+            
+            <div role="search" class="search">
+                <form><input type="search" placeholder="Search docs" id="mkdocs-search-query" /></form>
+            </div>
+        </div>
+         <a id="nav-scrh" class="scrh">&#8981;</a>
+    </header>
+    <div class="side" id="side">
+        <h2>Page</h2>
+        <ul>
+         
+              <!--
+
+-->
+
+<li class="active">
+    <a href=".">Home</a>
+</li>
+
+         
+              <!--
+
+-->
+
+<li >
+    <a href="https://www.jmoney.dev/blogs">Blogs</a>
+</li>
+
+         
+              <!--
+
+-->
+
+<li >
+    <a href="https://www.jmoney.dev/cloud">Cloud</a>
+</li>
+
+         
+              <!--
+
+-->
+
+<li >
+    <a href="https://www.jmoney.dev/homebrew">Homebrew</a>
+</li>
+
+         
+              <!--
+
+-->
+
+<li >
+    <a href="https://www.jmoney.dev/til">TIL</a>
+</li>
+
+         
+              <!--
+
+-->
+
+<li >
+    <a href="https://github.com/jmoney/resume/releases/download/latest/JonathanMonette_resume.pdf">Resume</a>
+</li>
+
+         
+              <!--
+
+-->
+
+<li >
+    <a href="license/">License</a>
+</li>
+
+         
+        </ul>
+          <h2>Table Of Contents</h2>
+          <ul id="toc" class="current">
+            
+              <li><a href="#x509-metrics">X509 Metrics</a></li>
+              
+                  <li class="child"><a href="#inputs">Inputs</a></li>
+              
+                  <li class="child"><a href="#output">Output</a></li>
+              
+                  <li class="child"><a href="#help">Help</a></li>
+              
+            
+        </ul>
+        <div class="about">
+            <hr/>
+            Built with 🛠 <a href="https://www.mkdocs.org">MkDocs</a> - 
+            Theme 🖤 <a href="https://github.com/g3xx/mkdocs-github">Github</a>.
+        </div>
+    </div>
+    <div class="spacer"><!-- i am margin --></div>
+    <div class="markdown-body">
+      
+        <div class="prev">
+          
+            &#8592; Previous Page
+          
+        </div>
+         <div class="next">
+          
+        <a href="license/" title="License"/>Next Page &#8594;</a>
+          
+        </div>
+      
+      <div class="clear"></div>
+    <div id="mkdocs-search-results"></div>
+
+      
+        <div id="body">
+            <h1 id="x509-metrics">X509 Metrics</h1>
+<p>This script pings a server and asks for the certificate or allows the certificate to be passed in on the command line.
+It then reports some expiration data in json form.  Useful for monitoring certificate expiration and when a certificate
+needs to be rotated.</p>
+<h2 id="inputs">Inputs</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stdin</td>
+<td>A certificate is expected to follow and the other options are ignored</td>
+</tr>
+<tr>
+<td>b64</td>
+<td>A base64 encoded certificate is expected to follow and the other options are ignored</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>The Host of the server that is to be inspected.</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>The Port of the server that is to be inspected. Default is <code>443</code>.</td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td>The protocol to use to connect to the server.  Valid options are <code>tcp</code> or <code>postgres</code>. Default is <code>tcp</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="output">Output</h2>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;,
+  &quot;$id&quot;: &quot;https://jmoney.dev/x509-metrics/x509metrics.schema.json&quot;,
+  &quot;title&quot;: &quot;X509Metrics&quot;,
+  &quot;description&quot;: &quot;Certificate expiration metrics of a x509 certificate.&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;error&quot;: {
+      &quot;description&quot;: &quot;Error message is gathering metrics failed with the reason why&quot;,
+      &quot;type&quot;: &quot;string&quot;
+    },
+    &quot;tags&quot;: {
+      &quot;description&quot;: &quot;Metadata about the certificate.&quot;,
+      &quot;type&quot;: &quot;array&quot;,
+      &quot;items&quot;: {
+        &quot;type&quot;: &quot;string&quot;
+      }
+    },
+    &quot;x509&quot;: {
+      &quot;description&quot;: &quot;Metric data is hosted under.&quot;,
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;days_left&quot;: {
+          &quot;description&quot;: &quot;The number of days left until this certificate expires.&quot;,
+          &quot;type&quot;: &quot;number&quot;
+        },
+        &quot;issued_days&quot;: {
+          &quot;description&quot;: &quot;The number of days this certificate has been issued for.&quot;,
+          &quot;type&quot;: &quot;number&quot;
+        },
+        &quot;issued_seconds&quot;: {
+          &quot;description&quot;: &quot;The number of seconds this certificate has been issued for.&quot;,
+          &quot;type&quot;: &quot;number&quot;
+        },
+        &quot;seconds_left&quot;: {
+          &quot;description&quot;: &quot;The number of seconds left until this certificate expires.&quot;,
+          &quot;type&quot;: &quot;number&quot;
+        }
+      },
+      &quot;required&quot;: [ &quot;days_left&quot;, &quot;issued_days&quot;, &quot;issued_seconds&quot;, &quot;seconds_left&quot; ]
+    }
+  }
+}
+</code></pre>
+<h2 id="help">Help</h2>
+<pre><code class="language-bash">x509-metrics -host example.com
+</code></pre>
+        </div>
+      
+      <hr/>
+  <!--
+  MkDocs version      : 1.4.2
+  Docs Build Date UTC : 2023-08-06 21:59:34.568390+00:00
+  -->
+</div>
+</body>
+</html>
