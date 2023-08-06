@@ -1,5 +1,24 @@
 site_name: X509 Certificate Metrics
-theme: material
+site_author: jmoney
+site_description: ""
+site_keyword: "jmoney, jonathan monette, engineer"
+docs_dir: docs
+
+plugins:
+  - search
+  - macros
+  - include-markdown
+
 nav:
   - Home: index.md
-  - Json Schema: x509metrics.schema.json
+  - Blogs: 'https://www.jmoney.dev/blogs'
+  - Cloud: 'https://www.jmoney.dev/cloud'
+  - Homebrew: 'https://www.jmoney.dev/homebrew' 
+  - TIL: 'https://www.jmoney.dev/til'
+  - Resume: 'https://github.com/jmoney/resume/releases/download/latest/JonathanMonette_resume.pdf'
+
+theme:
+  name: github
+  highlightjs: true
+  hljs_style: github
+  logo: img/favicon.ico
