@@ -5,6 +5,8 @@ on:
       - main
 
   workflow_dispatch:
+  repository_dispatch:
+    types: [deploy]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions: write-all
